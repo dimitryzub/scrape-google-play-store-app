@@ -1,8 +1,7 @@
 ![image](https://user-images.githubusercontent.com/78694043/150782168-b55eda6e-a31d-4796-9137-9a3af5d56807.png)
 
 
-# Google Play Store App Example Scraper
-
+# Scrape Google Play Store App 
 
 This repository is for [Scrape Google Play Store App results in Python]() in SerpApi blog post with step-by-step explanation scraping process. _Link will be active soon_.
 
