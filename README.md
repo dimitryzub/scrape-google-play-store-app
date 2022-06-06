@@ -3,6 +3,8 @@
 
 # Scrape Google Play Store App 
 
+Note: the code is not working due to Google Play UI change. The code will be updated soon.
+
 This repository is for [Scrape Google Play Store App results in Python](https://serpapi.com/blog/scrape-google-play-store-app-in-python/) in SerpApi blog post with step-by-step explanation scraping process.
 
 This is not a complete solution, although could be. There's exists a complete third-party solutions: [Python google-play-scraper](https://github.com/JoMingyu/google-play-scraper) 
