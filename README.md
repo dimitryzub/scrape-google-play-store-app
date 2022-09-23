@@ -3,85 +3,78 @@
 
 # Scrape Google Play Store App 
 
-Note: the code is not working due to Google Play UI change. The code will be updated soon.
+This repository is for [Scrape Google Play Store App results in Python](https://serpapi.com/blog/scrape-google-play-store-app-in-python/) blog post at SerpApi with step-by-step explanation scraping process.
 
-This repository is for [Scrape Google Play Store App results in Python](https://serpapi.com/blog/scrape-google-play-store-app-in-python/) in SerpApi blog post with step-by-step explanation scraping process.
+This is not a complete solution, although could be. There's exists a complete third-party solutions like [Python `google-play-scraper`](https://github.com/JoMingyu/google-play-scraper) without any external dependencies, and [JavaScript `google-play-scraper`](https://github.com/facundoolano/google-play-scraper). which you might like better. 
 
-This is not a complete solution, although could be. There's exists a complete third-party solutions: [Python google-play-scraper](https://github.com/JoMingyu/google-play-scraper) 
-without any external dependencies, and [JavaScript google-play-scraper](https://github.com/facundoolano/google-play-scraper).
+This repo and blog post is for someone who's looking to learn and/or build something on their own by adding thing on top of it since it's easier than addining things to the package.
 
-**Example output** from current repository scraper (_3 out of 40 comments are show_):
+#### Example output
 
 ```json
 {
-  "app_data": [
-    {
-      "app_name": "Super Mario Run",
-      "app_type": "SoftwareApplication",
-      "app_url": "https://play.google.com/store/apps/details/Super_Mario_Run?id=com.nintendo.zara&hl=en_US&gl=RU",
-      "app_main_thumbnail": "https://play-lh.googleusercontent.com/5LIMaa7WTNy34bzdFhBETa2MRj7mFJZWb8gCn_uyxQkUvFx_uOFCeQjcK16c6WpBA3E",
-      "app_description": "A new kind of Mario game that you can play with one hand.You control Mario by tapping as he constantly runs forward. You time your taps to pull off stylish jumps, midair spins, and wall jumps to gather coins and reach the goal!Super Mario Run can be downloaded for free and after you purchase the game, you will be able to play all the modes with no additional payment required. You can try out all four modes before purchase: World Tour, Toad Rally, Remix 10, and Kingdom Builder.\u25a0World TourRun and jump with style to rescue Princess Peach from Bowser\u2019s clutches! Travel through plains, caverns, ghost houses, airships, castles, and more.Clear the 24 exciting courses to rescue Princess Peach from Bowser, waiting in his castle at the end. There are many ways to enjoy the courses, such as collecting the 3 different types of colored coins or by competing for the highest score against your friends. You can try courses 1-1 to 1-4 for free.After rescuing Princess Peach, a nine-course special world, World Star, will appear.\u25a0Remix 10Some of the shortest Super Mario Run courses you'll ever play!This mode is Super Mario Run in bite-sized bursts! You'll play through 10 short courses one after the other, with the courses changing each time you play. Daisy is lost somewhere in Remix 10, so try to clear as many courses as you can to find her!\u25a0Toad RallyShow off Mario\u2019s stylish moves, compete against your friends, and challenge people from all over the world.In this challenge mode, the competition differs each time you play.Compete against the stylish moves of other players for the highest score as you gather coins and get cheered on by a crowd of Toads. Fill the gauge with stylish moves to enter Coin Rush Mode to get more coins. If you win the rally, the cheering Toads will come live in your kingdom, and your kingdom will grow. \u25a0Kingdom BuilderGather coins and Toads to build your very own kingdom.Combine different buildings and decorations to create your own unique kingdom. There are over 100 kinds of items in Kingdom Builder mode. If you get more Toads in Toad Rally, the number of buildings and decorations available will increase. With the help of the friendly Toads you can gradually build up your kingdom.\u25a0What You Can Do After Purchasing All Worlds\u30fb All courses in World Tour are playableWhy not try out the bigger challenges and thrills available in all courses?\u30fb Easier to get Rally TicketsIt's easier to get Rally Tickets that are needed to play Remix 10 and Toad Rally. You can collect them in Kingdom Builder through Bonus Game Houses and ? Blocks, by collecting colored coins in World Tour, and more.\u30fb More playable charactersIf you rescue Princess Peach by completing course 6-4 and build homes for Luigi, Yoshi, and Toadette in Kingdom Builder mode, you can get them to join your adventures as playable characters. They play differently than Mario, so why not put their special characteristics to good use in World Tour and Toad Rally?\u30fb More courses in Toad RallyThe types of courses available in Toad Rally will increase to seven different types of courses, expanding the fun! Along with the new additions, Purple and Yellow Toads may also come to cheer for you.\u30fb More buildings and decorations in Kingdom BuilderThe types of buildings available will increase, so you'll be able to make your kingdom even more lively. You can also place Rainbow Bridges to expand your kingdom.\u30fb Play Remix 10 without having to waitYou can play Remix 10 continuously, without having to wait between each game.*Internet connectivity required to play. Data charges may apply. May contain advertisements.",
-      "app_content_rating": "Rated for 3+",
-      "app_category": "GAME_ACTION",
-      "app_operating_system": "ANDROID",
-      "app_rating": 3.5,
-      "app_reviews": "1616124",
-      "app_author": "Nintendo Co., Ltd.",
-      "app_author_url": "https://supermariorun.com/",
-      "app_screenshots": [
-        "https://play-lh.googleusercontent.com/dcv6Z-pr3MsSvxYh_UiwvJem8fktDUsvvkPREnPaHYienbhT31bZ2nUqHqGpM1jdal8",
-        "https://play-lh.googleusercontent.com/SVYZCU-xg-nvaBeJ-rz6rHSSDp20AK-5AQPfYwI38nV8hPzFHEqIgFpc3LET-Dmu-Q",
-        "https://play-lh.googleusercontent.com/Nne-dalTl8DJ9iius5oOLmFe-4DnvZocgf92l8LTV0ldr9JVQ2BgeW_Bbjb5nkVngrQ",
-        "https://play-lh.googleusercontent.com/yIqljB_Jph_T_ITmVFTpmDV0LKXVHWmsyLOVyEuSjL2794nAhTBaoeZDpTZZLahyRsE",
-        "https://play-lh.googleusercontent.com/5HdGRlNsBvHTNLo-vIsmRLR8Tr9degRfFtungX59APFaz8OwxTnR_gnHOkHfAjhLse7e",
-        "https://play-lh.googleusercontent.com/bPhRpYiSMGKwO9jkjJk1raR7cJjMgPcUFeHyTg_I8rM7_6GYIO9bQm6xRcS4Q2qr6mRx",
-        "https://play-lh.googleusercontent.com/7DOCBRsIE5KncQ0AzSA9nSnnBh0u0u804NAgux992BhJllLKGNXkMbVFWH5pwRwHUg",
-        "https://play-lh.googleusercontent.com/PCaFxQba_CvC2pi2N9Wuu814srQOUmrW42mh-ZPCbk_xSDw3ubBX7vOQeY6qh3Id3YE",
-        "https://play-lh.googleusercontent.com/fQne-6_Le-sWScYDSRL9QdG-I2hWxMbe2QbDOzEsyu3xbEsAb_f5raRrc6GUNAHBoQ",
-        "https://play-lh.googleusercontent.com/ql7LENlEZaTq2NaPuB-esEPDXM2hs1knlLa2rWOI3uNuQ77hnC1lLKNJrZi9XKZFb4I",
-        "https://play-lh.googleusercontent.com/UIHgekhfttfNCkd5qCJNaz2_hPn67fOkv40_5rDjf5xot-QhsDCo2AInl9036huUtCwf",
-        "https://play-lh.googleusercontent.com/7iH7-GjfS_8JOoO7Q33JhOMnFMK-O8k7jP0MUI75mYALK0kQsMsHpHtIJidBZR46sfU",
-        "https://play-lh.googleusercontent.com/czt-uL-Xx4fUgzj_JbNA--RJ3xsXtjAxMK7Q_wFZdoMM6nL_g-4S5bxxX3Di3QTCwgw",
-        "https://play-lh.googleusercontent.com/e5HMIP0FW9MCoAEGYzji9JsrvyovpZ3StHiIANughp3dovUxdv_eHiYT5bMz38bowOI",
-        "https://play-lh.googleusercontent.com/nv2BP1glvMWX11mHC8GWlh_UPa096_DFOKwLZW4DlQQsrek55pY2lHr29tGwf2FEXHM",
-        "https://play-lh.googleusercontent.com/xwWDr_Ib6dcOr0H0OTZkHupwSrpBoNFM6AXNzNO27_RpX_BRoZtKIULKEkigX8ETOKI",
-        "https://play-lh.googleusercontent.com/AxHkW996UZvDE21HTkGtQPU8JiQLzNxp7yLoQiSCN29Y54kZYvf9aWoR6EzAlnoACQ",
-        "https://play-lh.googleusercontent.com/xFouF73v1_c5kS-mnvQdhKwl_6v3oEaLebsZ2inlJqIeF2eenXjUrUPJsjSdeAd41w",
-        "https://play-lh.googleusercontent.com/a1pta2nnq6f_b9uV0adiD9Z1VVQrxSfX315fIQqgKDcy8Ji0BRC1H7z8iGnvZZaeg80",
-        "https://play-lh.googleusercontent.com/SDAFLzC8i4skDJ2EcsEkXidcAJCql5YCZI76eQB15fVaD0j-ojxyxea00klquLVtNAw",
-        "https://play-lh.googleusercontent.com/H7BcVUoygPu8f7oIs2dm7g5_vVt9N9878f-rGd0ACd-muaDEOK2774okryFfsXv9FaI",
-        "https://play-lh.googleusercontent.com/5LIMaa7WTNy34bzdFhBETa2MRj7mFJZWb8gCn_uyxQkUvFx_uOFCeQjcK16c6WpBA3E",
-        "https://play-lh.googleusercontent.com/pzvdI66OFjncahvxJN714Tu5pHUJ_nJK--vg0tv5cpgaGNvjfwsxC-SKxoQh9_n_wEcCdSQF9FeuZeI"
-      ]
-    }
-  ],
-  "app_user_comments": [
-    {
-      "user_name": "Misha t",
-      "user_avatar": "https://play-lh.googleusercontent.com/a/AATXAJxvYKOfPVaqDZg0FOUjJOV-W3qR6r_cMAz0XMgU\\u003dmo",
-      "comment": "Fun game, but it does not warns you that only World 1 (out of 6) is free, others are behind paywall. Dont spend your time if you want full game for free",
-      "user_app_rating": "1",
-      "user_comment_likes": "9",
-      "user_comment_published_at": "2021-09-07 19:01:46",
-      "user_comment_id": "gp:AOqpTOFb_Fc_r33sWOwoSN8Zq4DDV7C9xuPTLUatfAplVowAb0NJbym2jv3j2DHBjT1o89y4z4vNZPblN60png"
+  "basic_info": {
+    "developer": {
+      "name": "Nintendo Co., Ltd.",
+      "url": "https://supermariorun.com/",
+      "email": "supermariorun-support@nintendo.co.jp"
     },
-    {
-      "user_name": "Daniel Dayton",
-      "user_avatar": "https://play-lh.googleusercontent.com/a/AATXAJwWBeaKPKK1OjD3H2PH9GkiMNrg3SVyqwBFdTuG\\u003dmo",
-      "comment": "This is a great game. Worth the $10 for the full game in my opinion. I do have a dislike though. The Toad Run levels are always like the same 5 or 6 levels. I think making more levels should be an objective for the creators. It would be appreciated for sure. Overall its a legit game. Again, definitely recommend buying the full game. Happy gaming folks.",
-      "user_app_rating": "4",
-      "user_comment_likes": "22",
-      "user_comment_published_at": "2022-01-21 06:57:49",
-      "user_comment_id": "gp:AOqpTOFCfzdf3J6kQVCfu5WgYLf6l9JL-du8yNutnuC5tPeDBNdFgbiLJwrTJbvJjmsYvUHLpEmBfTx9ZriFvQ"
+    "downloads_info": {
+      "long_form_not_formatted": "100,000,000+",
+      "long_form_formatted": "100000000",
+      "as_displayed_short_form": "100M+",
+      "actual_downloads": "211560819"
     },
+    "name": "Super Mario Run",
+    "type": "SoftwareApplication",
+    "url": "https://play.google.com/store/apps/details/Super_Mario_Run?id=com.nintendo.zara&hl=en_GB&gl=US",
+    "description": "Control Mario with just a tap!",
+    "application_category": "GAME_ACTION",
+    "operating_system": "ANDROID",
+    "thumbnail": "https://play-lh.googleusercontent.com/3ZKfMRp_QrdN-LzsZTbXdXBH-LS1iykSg9ikNq_8T2ppc92ltNbFxS-tORxw2-6kGA",
+    "content_rating": "Everyone",
+    "rating": 4.0,
+    "reviews": "1643139",
+    "price": "0",
+    "release_date": "22 Mar 2017",
+    "images": [
+      "https://play-lh.googleusercontent.com/yT8ZCQHNB_MGT9Oc6mC5_mQS5vZ-5A4fvKQHHOl9NBy8yWGbM5-EFG_uISOXmypBYQ6G",
+      "https://play-lh.googleusercontent.com/AvRrlEpV8TCryInAnA__FcXqDu5d3i-XrUp8acW2LNmzkU-rFXkAKgmJPA_4AHbNjyY",
+      "https://play-lh.googleusercontent.com/AESbAa4QFa9-lVJY0vmAWyq2GXysv5VYtpPuDizOQn40jS9Z_ji8HXHA5hnOIzaf_w",
+      "https://play-lh.googleusercontent.com/KOCWy63UI2p7Fc65_X5gnIHsErEt7gpuKoD-KcvpGfRSHp-4k8YBGyPPopnrNQpdiQ",
+      "https://play-lh.googleusercontent.com/iDJagD2rKMJ92hNUi5WS2S_mQ6IrKkz6-G8c_zHNU9Ck8XMrZZP-1S_KkDsA6KDJ9No",
+      "https://play-lh.googleusercontent.com/QsdO8Pn6qxvfAi4es7uicI-xB21dPN3s8SBfmnuXPjFftdXCuugxis7CDJbAkQ_pzA",
+      "https://play-lh.googleusercontent.com/oEIUG3KTnijbe5TH3HO3NMAF5Ai8LkIAtKOO__TduDq4wOzGQA2PzZlBJg2C4mURDR8",
+      "https://play-lh.googleusercontent.com/BErkwcIVa4ldoVL56EvGWTQJ2nPu-Y6EFeAS4dfK7l0CufebWdrRC9CduHqNwysPYf8",
+      "https://play-lh.googleusercontent.com/cw86ny78mbNHVRDLlhw1fxVbZxiYFC7yYDRY3Nt2dnRGihRhxo1eOy4IjrSVVzKW9Is",
+      "https://play-lh.googleusercontent.com/Kx0gmRSH582Te-BeTo-C87f3hl-2sf7DRaWso3qZ46p9PZ97socE6FuK09vzebVF8AA",
+      "https://play-lh.googleusercontent.com/OJhOUUZjTUw4e3EEbPlZnuKdmUIGdLSSwUgb5ygPfiO0h1SeHIl3s_L7R8xBDLVnjPU",
+      "https://play-lh.googleusercontent.com/Z0Ggjrocxk7SRTAhFCL6ZEc04eCAdI09Xf08Th7dfn_ViIBrK7E8Bd1p3Lfi-pjiLLWz",
+      "https://play-lh.googleusercontent.com/pn58u5DpcUNOgE4NOQc4jFJaFyR3EaiO0YWlekYdQmBV3Q6jrF_ioX78gbtH2eZTTA",
+      "https://play-lh.googleusercontent.com/EItdRRArK4yI7LPArgKOhwTrcALMSFS41F49dOuX6c8a7XPw20WNfSiDrE7ZnIbTRME",
+      "https://play-lh.googleusercontent.com/xDFJgEfAPeGcfk72Nfe9jE-7oDyMDYtucW4W0mYh3vV8YgMb2T91BQ1do1r_8fU-Sw",
+      "https://play-lh.googleusercontent.com/Bn6SFuIjgL8CLHTB6C7t_Dv7MCGwAxh8OIV7z-gKhNpJtxss2Vqwl_50HdHFUyoet7s",
+      "https://play-lh.googleusercontent.com/eEKSdZPf7yo-WWcb9tGLQ-O17XVbd02rGREHwWC79JDOgVZFTaWmi0s1vg2H4Mn51hI",
+      "https://play-lh.googleusercontent.com/vlOYHPoi3AwQuAEAuWi1pu37cnxObDelQ5xQQP3ojAmptiJbBereG8Ugvlp_vihDS9c",
+      "https://play-lh.googleusercontent.com/2PuQ1L2sE0opnEG9AywzAzNBIV0sZo1y1ftrJ518oPwgjtUJ6iUrKskgn8DWRClFQnM",
+      "https://play-lh.googleusercontent.com/TvcAspZw7Tc1CQV3DJrzPL_I4sACQhvNhDqB90r9yiYfAnPOUk8gi1fFcT1NdAsKG_l-",
+      "https://play-lh.googleusercontent.com/vpt0r-PxWy2ea8xvuPSg0cn3iNXrS1v6pCFzWSPOane0lkDcfIGoSTvhiFz_en4CePI",
+      "https://play-lh.googleusercontent.com/3ZKfMRp_QrdN-LzsZTbXdXBH-LS1iykSg9ikNq_8T2ppc92ltNbFxS-tORxw2-6kGA",
+      "https://play-lh.googleusercontent.com/iTZtyWYr4T-slu1nifgRqEhtMLmxcNagc2rDAyiWntDQWCVLlGR7rDvx0uK6z-zLujwv",
+      "https://play-lh.googleusercontent.com/iTZtyWYr4T-slu1nifgRqEhtMLmxcNagc2rDAyiWntDQWCVLlGR7rDvx0uK6z-zLujwv"
+    ],
+    "video_trailer": "https://play-games.googleusercontent.com/vp/mp4/1280x720/qjHSn4GwQWY.mp4"
+  },
+  "user_comments": [
     {
-      "user_name": "B D",
-      "user_avatar": "https://play-lh.googleusercontent.com/a-/AOh14GgooCmK9PNBUby-Pbwyp6qqOGiXFWXjkCpT_Ulw",
-      "comment": "Played the game for a week, decided I liked it and paid the $9.99 for it. Worked for 2 or 3 days, I built up mad rally tickets and coins. Now I try to play and it says \\support code...\\ and wont allow me to play. Sent an inquiry and was told the game doesnt work on all devices. Funny, I was playing it just fine prior to paying the $9.99. I expect to be refunded, I clearly wouldnt have purchased a game that wasnt compatible with my device. The game worked fine, until it didnt.",
-      "user_app_rating": "1",
-      "user_comment_likes": "34",
-      "user_comment_published_at": "2022-01-20 12:04:05",
-      "user_comment_id": "gp:AOqpTOGvKVLd7aqq77oixx60R2dX1h1Z4K2PgP0Pa_zktffqGl9jc_GRv9Fj3duvOIwNXthTx_Lkw3T6FKfCoQ"
+      "user_avatar": "https://play-lh.googleusercontent.com/EGemoI2NTXmTsBVtJqk8jxF9rh8ApRWfsIMQSt2uE4OcpQqbFu7f7NbTK05lx80nuSijCz7sc3a277R67g",
+      "user_rating": "3",
+      "user_comment": "Now, while I love the Mario Series, I will say that I am not the biggest fan of this game. When playing Remix 10, I found that the screen lagged for seemingly no reason, which threw me off plenty of times. The level design also seems pretty bland and just the same old settings you see over and over again. Overall I feel like this was just another cash grab from Nintendo, not to mention you actually need to PAY to unlock the rest of the game. But other than that, it looks decent graphic-wise."
+    }, ... other comments
+    {
+      "user_avatar": "https://play-lh.googleusercontent.com/EGemoI2NTXmTsBVtJqk8jxF9rh8ApRWfsIMQSt2uE4OcpQqbFu7f7NbTK05lx80nuSijCz7sc3a277R67g",
+      "user_rating": "2",
+      "user_comment": "Too many tutorials that dont even let you play until 5 minutes of tapping the screen. Then after only a few levels you have to pay for the rest of them. Nintendo makes so much money you\\'d think they could make a game that allowed you to pay to remove ads, not pay to play the game you installed in the first place. But when you aren\\'t being forcefed tutorials for a game you won\\'t play that long anyway, the gameplay is actually pretty fun and challenging. Those are the only pros."
     }
   ]
 }
