@@ -1,115 +1,113 @@
 from bs4 import BeautifulSoup
 import requests, lxml, re, json
-from datetime import datetime
 
+# https://requests.readthedocs.io/en/latest/user/quickstart/#custom-headers
 headers = {
-    "user-agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
 }
 
+# https://requests.readthedocs.io/en/latest/user/quickstart/#passing-parameters-in-urls
 params = {
-    "id": "com.nintendo.zara",  # app name
-    "gl": "RU"  # country
+    "id": "com.nintendo.zara",     # app name
+    "gl": "US",                    # country of the search
+    "hl": "en_GB"                  # language of the search
 }
 
 
-def scrape_google_store_app():
-    html = requests.get("https://play.google.com/store/apps/details", params=params, headers=headers, timeout=10).text
-    soup = BeautifulSoup(html, "lxml")
+def google_store_app_data():
+    html = requests.get("https://play.google.com/store/apps/details", params=params, headers=headers, timeout=30)
+    soup = BeautifulSoup(html.text, "lxml")
 
     # where all app data will be stored
-    app_data = []
-
-    # <script> position is not changing that's why [12] index being selected. Other <script> tags position are changing.
-    # [12] index is a basic app information
-    # https://regex101.com/r/DrK0ih/1
-    basic_app_info = json.loads(re.findall(r"<script nonce=\".*\" type=\"application/ld\+json\">(.*?)</script>",
-                                           str(soup.select("script")[12]), re.DOTALL)[0])
-
-    app_name = basic_app_info["name"]
-    app_type = basic_app_info["@type"]
-    app_url = basic_app_info["url"]
-    app_description = basic_app_info["description"].replace("\n", "")  # replace new line character to nothing
-    app_category = basic_app_info["applicationCategory"]
-    app_operating_system = basic_app_info["operatingSystem"]
-    app_main_thumbnail = basic_app_info["image"]
-
-    app_content_rating = basic_app_info["contentRating"]
-    app_rating = round(float(basic_app_info["aggregateRating"]["ratingValue"]), 1)  # 4.287856 -> 4.3
-    app_reviews = basic_app_info["aggregateRating"]["ratingCount"]
-
-    app_author = basic_app_info["author"]["name"]
-    app_author_url = basic_app_info["author"]["url"]
-
-    # https://regex101.com/r/VX8E7U/1
-    app_images_data = re.findall(r",\[\d{3,4},\d{3,4}\],.*?(https.*?)\"", str(soup.select("script")))
-    # delete duplicates from app_images_data
-    app_images = [item for item in app_images_data if app_images_data.count(item) == 1]
-
-    # User comments
-    app_user_comments = []
-
-    # https://regex101.com/r/SrP5DS/1
-    app_user_reviews_data = re.findall(r"(\[\"gp.*?);</script>",
+    app_data = {
+        "basic_info":{
+            "developer":{},
+            "downloads_info": {}
+        },
+        "user_comments": []
+    }
+    
+    # [11] index is a basic app information
+    # https://regex101.com/r/zOMOfo/1
+    basic_app_info = json.loads(re.findall(r"<script nonce=\"\w+\" type=\"application/ld\+json\">({.*?)</script>", 
+                                           str(soup.select("script")[11]), re.DOTALL)[0])
+     
+    # https://regex101.com/r/6Reb0M/1
+    additional_basic_info =  re.search(fr"<script nonce=\"\w+\">AF_initDataCallback\(.*?(\"{basic_app_info.get('name')}\".*?)\);<\/script>", 
+            str(soup.select("script")), re.M|re.DOTALL).group(1)
+    
+    app_data["basic_info"]["name"] = basic_app_info.get("name")
+    app_data["basic_info"]["type"] = basic_app_info.get("@type")
+    app_data["basic_info"]["url"] = basic_app_info.get("url")
+    app_data["basic_info"]["description"] = basic_app_info.get("description").replace("\n", "")  # replace new line character to nothing
+    app_data["basic_info"]["application_category"] = basic_app_info.get("applicationCategory")
+    app_data["basic_info"]["operating_system"] = basic_app_info.get("operatingSystem")
+    app_data["basic_info"]["thumbnail"] = basic_app_info.get("image")
+    app_data["basic_info"]["content_rating"] = basic_app_info.get("contentRating")
+    app_data["basic_info"]["rating"] = round(float(basic_app_info.get("aggregateRating").get("ratingValue")), 1)  # 4.287856 -> 4.3
+    app_data["basic_info"]["reviews"] = basic_app_info.get("aggregateRating").get("ratingCount")
+    app_data["basic_info"]["reviews"] = basic_app_info.get("aggregateRating").get("ratingCount")
+    app_data["basic_info"]["price"] = basic_app_info["offers"][0]["price"]
+    
+    app_data["basic_info"]["developer"]["name"] = basic_app_info.get("author").get("name")
+    app_data["basic_info"]["developer"]["url"] = basic_app_info.get("author").get("url")
+    
+    # https://regex101.com/r/C1WnuO/1
+    app_data["basic_info"]["developer"]["email"] = re.search(r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+", additional_basic_info).group(0)
+    
+    # https://regex101.com/r/Y2mWEX/1 (a few matches but re.search always matches the first occurence)
+    app_data["basic_info"]["release_date"] = re.search(r"\d{1,2}\s[A-Z-a-z]{3}\s\d{4}", additional_basic_info).group(0)
+    
+    # https://regex101.com/r/7yxDJM/1
+    app_data["basic_info"]["downloads_info"]["long_form_not_formatted"] = re.search(r"\"(\d+,?\d+,?\d+\+)\"\,(\d+),(\d+),\"(\d+M\+)\"", additional_basic_info).group(1)
+    app_data["basic_info"]["downloads_info"]["long_form_formatted"] = re.search(r"\"(\d+,?\d+,?\d+\+)\"\,(\d+),(\d+),\"(\d+M\+)\"", additional_basic_info).group(2)
+    app_data["basic_info"]["downloads_info"]["as_displayed_short_form"] = re.search(r"\"(\d+,?\d+,?\d+\+)\"\,(\d+),(\d+),\"(\d+M\+)\"", additional_basic_info).group(4)
+    app_data["basic_info"]["downloads_info"]["actual_downloads"] = re.search(r"\"(\d+,?\d+,?\d+\+)\"\,(\d+),(\d+),\"(\d+M\+)\"", additional_basic_info).group(3)
+    
+    # https://regex101.com/r/jjsdUP/1
+    # [2:] skips 2 PEGI logo thumbnails and extracts only app images 
+    app_data["basic_info"]["images"] = re.findall(r",\[\d{3,4},\d{3,4}\],.*?(https.*?)\"", additional_basic_info)[2:]
+    
+    try:
+        # https://regex101.com/r/C1WnuO/1
+        app_data["basic_info"]["video_trailer"] = "".join(re.findall(r"\"(https:\/\/play-games\.\w+\.com\/vp\/mp4\/\d+x\d+\/\S+\.mp4)\"", additional_basic_info)[0])
+    except:
+        app_data["basic_info"]["video_trailer"] = None
+    
+    
+    # User reviews
+    # https://regex101.com/r/xDVZq7/1
+    user_reviews = re.findall(r'Write a short review.*?<script nonce="\w+">AF_initDataCallback\({key:.*data:\[\[\[\"\w.*?\",(.*?)sideChannel: {}}\);<\/script>',
                                        str(soup.select("script")), re.DOTALL)
-
-    for review in app_user_reviews_data:
-        # https://regex101.com/r/M24tiM/1
-        user_name = re.findall(r"\"gp:.*?\",\s?\[\"(.*?)\",", str(review))
-        # https://regex101.com/r/TGgR45/1
-        user_avatar = [avatar.replace('"', "") for avatar in re.findall(r"\"gp:.*?\"(https.*?\")", str(review))]
-
-        # replace single/double quotes at the start/end of a string
-        # https://regex101.com/r/iHPOrI/1
-        user_comment = [comment.replace('"', "").replace("'", "") for comment in
-                        re.findall(r"gp:.*?https:.*?]]],\s?\d+?,.*?,\s?(.*?),\s?\[\d+,", str(review))]
-
-        # comment utc timestamp
-        # use datetime.utcfromtimestamp(int(date)).date() to have only a date
-        user_comment_date = [str(datetime.utcfromtimestamp(int(date))) for date in re.findall(r"\[(\d+),", str(review))]
-
-        # https://regex101.com/r/GrbH9A/1
-        user_comment_id = [ids.replace('"', "") for ids in re.findall(r"\[\"(gp.*?),", str(review))]
-        # https://regex101.com/r/jRaaQg/1
-        user_comment_likes = re.findall(r",?\d+\],?(\d+),?", str(review))
-        # https://regex101.com/r/Z7vFqa/1
-        user_comment_app_rating = re.findall(r"\"gp.*?https.*?\],(.*?)?,", str(review))
-
-
-        for name, avatar, comment, date, comment_id, likes, user_app_rating in zip(user_name,
-                                                                                   user_avatar,
-                                                                                   user_comment,
-                                                                                   user_comment_date,
-                                                                                   user_comment_id,
-                                                                                   user_comment_likes,
-                                                                                   user_comment_app_rating):
-            app_user_comments.append({
-                "user_name": name,
-                "user_avatar": avatar,
-                "comment": comment,
-                "user_app_rating": user_app_rating,
-                "user_comment_likes": likes,
-                "user_comment_published_at": date,
-                "user_comment_id": comment_id
-            })
-
-        app_data.append({
-            "app_name": app_name,
-            "app_type": app_type,
-            "app_url": app_url,
-            "app_main_thumbnail": app_main_thumbnail,
-            "app_description": app_description,
-            "app_content_rating": app_content_rating,
-            "app_category": app_category,
-            "app_operating_system": app_operating_system,
-            "app_rating": app_rating,
-            "app_reviews": app_reviews,
-            "app_author": app_author,
-            "app_author_url": app_author_url,
-            "app_screenshots": app_images
+    
+    # https://regex101.com/r/D6BIBP/1
+    # [::3] to grab every 2nd (second) picture to avoid duplicates
+    avatars = re.findall(r",\"(https:.*?)\"\].*?\d{1}", str(user_reviews))[::3]
+    
+    # https://regex101.com/r/18EziQ/1
+    ratings = re.findall(r"https:.*?\],(\d{1})", str(user_reviews))
+    
+    # https://regex101.com/r/mSku7n/1
+    comments = re.findall(r"https:.*?\],\d{1}.*?\"(.*?)\",\[\d+,\d+\]", str(user_reviews))
+    
+    for comment, rating, avatar in zip(comments, ratings, avatars):
+        app_data["user_comments"].append({
+            "user_avatar": avatar,
+            "user_rating": rating,
+            "user_comment": comment
         })
 
-        return {"app_data": app_data, "app_user_comments": app_user_comments}
+
+    print(json.dumps(app_data, indent=2, ensure_ascii=False))
 
 
-print(json.dumps(scrape_google_store_app()["app_user_comments"], indent=2))
+if __name__ == "__main__":
+    # https://stackoverflow.com/a/17533149/15164646
+    # reruns script if `basic_app_info` or `additional_basic_info` throws an exception due to <script> position change
+    while True: 
+        try:
+            google_store_app_data()
+        except:
+            pass
+        else:
+            break
