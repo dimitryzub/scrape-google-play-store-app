@@ -3,13 +3,18 @@
 
 # Scrape Google Play Store App 
 
-This repository is for [Scrape Google Play Store App results in Python](https://serpapi.com/blog/scrape-google-play-store-app-in-python/) blog post at SerpApi with step-by-step explanation scraping process.
+Data extracted from the given scripts:
 
-This is not a complete solution, although could be. There's exists a complete third-party solutions like [Python `google-play-scraper`](https://github.com/JoMingyu/google-play-scraper) without any external dependencies, and [JavaScript `google-play-scraper`](https://github.com/facundoolano/google-play-scraper). which you might like better. 
+- [Basic app info + 40 comments](https://github.com/dimitryzub/scrape-google-play-store-app/blob/f601031e9550dc79cbbcf91211dfa1bcd56bdb35/scrape_google_store_app.py).
+- [All comments](https://github.com/dimitryzub/scrape-google-play-store-app/blob/f601031e9550dc79cbbcf91211dfa1bcd56bdb35/scrape_google_play_store_app_all_reviews.py).
 
-This repo and blog post is for someone who's looking to learn and/or build something on their own by adding thing on top of it since it's easier than addining things to the package.
+This repository is for [Scrape Google Play Store App results in Python](https://serpapi.com/blog/scrape-google-play-store-app-in-python/) and [Scrape All Google Play App Reviews in Python](https://serpapi.com/blog/scrape-all-google-play-app-reviews-in-python/) blog posts at [SerpApi](https://serpapi.com/) with step-by-step explanation process.
 
-#### Example output
+This is not a complete solution (bypassing blocks, etc). There's exists a complete third-party solutions like [Python `google-play-scraper`](https://github.com/JoMingyu/google-play-scraper) without any external dependencies, and [JavaScript `google-play-scraper`](https://github.com/facundoolano/google-play-scraper). which you might like better. 
+
+This repo and blog posts is for someone who's looking to learn and/or build something on their own by adding thing on top of it since it's a simple scripts and migh tbe easier than addining things to the package.
+
+#### Example output from basic info:
 
 ```json
 {
@@ -78,4 +83,36 @@ This repo and blog post is for someone who's looking to learn and/or build somet
     }
   ]
 }
+```
+
+
+#### Example output from all comments:
+
+```json
+[
+  {
+    "position": 1,
+    "user_name": "JazzTripp",
+    "user_avatar": "https://play-lh.googleusercontent.com/a-/ACNPEu8THUUDL3yzcd0bHSDRR4OegOWLmfbFi70On0HbRg",
+    "user_comment": "This app takes a bit if getting used to at first, but the catalogue is extensive, and most bar codes and isbn numbers can be used to autofill a good chuck of a collection. I personally use this app for manga, and while its only correct about 70% of the time, its still easy to update and change as you see fit. The 'add to core' option makes me feel like im actually helping out the app, so i add data whenever i can. Keep up the good work guys!",
+    "comment_likes": "20",
+    "app_rating": "5",
+    "comment_date": "May 06, 2022",
+    "developer_comment": null
+  }, ... other results
+  {
+    "position": 875,
+    "user_name": "Originalbigguy",
+    "user_avatar": "https://play-lh.googleusercontent.com/a/ALm5wu3dYTOHvlG8SUqgyTbRnjv9I49JtxgySY-RwTJU=s64-rw-mo",
+    "user_comment": "Not free",
+    "comment_likes": null,
+    "app_rating": "1",
+    "comment_date": "9 April 2021",
+    "developer_comment": {
+      "dev_title": "Collectorz.com",
+      "dev_comment": "The app is never advertised as free anywhere. The app information clearly states this is a paid subscription app.\n",
+      "dev_comment_date": "10 April 2021"
+    }
+  }
+]
 ```
